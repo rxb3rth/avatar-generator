@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avatar Generator</title>
+    <style>
+      body {
+        text-align: center;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+
+      canvas {
+        display: block;
+        margin: 1em auto;
+        border: 1px solid #ccc;
+      }
+
+      button {
+        display: block;
+        margin: 1em auto;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+        border-radius: 5px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+      }
+
+      button:hover {
+        background-color: #3e8e41;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Avatar Generator</h1>
+
+    <canvas id="avatar-canvas" width="128" height="128"></canvas>
+    <button id="generate-avatar-button">Generate New Avatar</button>
+
+    <script>
+      const canvas = document.getElementById("avatar-canvas");
+      const ctx = canvas.getContext("2d");
+      
+      const pixelSize = 8;
+
+      const skinColors = [
+        "#f7bca4",
+        "#f0c7b2",
+        "#e8b59f",
+        "#e4ad8b",
+        "#e0a179",
+        "#d8a27c",
+      ];
+
+      const eyeColors = ["#000000", "#ffffff"];
+
+      const hairColors = [
+        "#f9da85",
+        "#fbca6b",
+        "#fbbd45",
+        "#e8a54f",
+        "#d98d56",
+        "#c97d50",
+        "#a55b32",
+        "#873d30",
+        "#6e2b23",
+      ];
+
+      const mouthColors = [
+        "#e06666",
+        "#f6b26b",
+        "#ffd966",
+        "#93c47d",
+        "#76a5af",
+        "#6fa8dc",
+        "#8e7cc3",
+        "#c27ba0",
+      ];
+
+      const noseColors = ["#f2d2b6", "#e2b292", "#c37d6f"];
+
+      const faceFeatures = [
+        { color: "hair", width: 4, height: 4 },
+        { color: "eye", width: 2, height: 2 },
+        { color: "eye", width: 2, height: 2 },
+        { color: "nose", width: 2, height: 2 },
+        { color: "mouth", width: 4, height: 1 },
+      ];
+
+      function generateAvatar() {
+        // Clear the canvas
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the face background
+        const skinColorIndex = Math.floor(Math.random() * skinColors.length);
+        const skinColor = skinColors[skinColorIndex];
+        ctx.fillStyle = skinColor;
+        ctx.fillRect(32, 24, 64, 80);
+
+        // Draw the face features
+        for (let i = 0; i < faceFeatures.length; i++) {
+          const feature = faceFeatures[i];
+          const x =
+            64 -
+            feature.width * 4 +
+            Math.floor(
+              Math.random() * (feature.width * 8 - pixelSize * feature.width)
+            );
+          const y =
+            56 -
+            feature.height * 4 +
+            Math.floor(
+              Math.random() * (feature.height * 8 - pixelSize * feature.height)
+            );
+          const color = feature.color;
+          if (color == "hair") {
+            const hairColorIndex = Math.floor(
+              Math.random() * hairColors.length
+            );
+            const hairColor = hairColors[hairColorIndex];
+            ctx.fillStyle = hairColor;
+          } else if (color == "eye") {
+            const eyeColorIndex = Math.floor(Math.random() * eyeColors.length);
+            const eyeColor = eyeColors[eyeColorIndex];
+            ctx.fillStyle = eyeColor;
+          } else if (color == "nose") {
+            const noseColorIndex = Math.floor(
+              Math.random() * noseColors.length
+            );
+            const noseColor = noseColors[noseColorIndex];
+            ctx.fillStyle = noseColor;
+          } else if (color == "mouth") {
+            const mouthColorIndex = Math.floor(
+              Math.random() * mouthColors.length
+            );
+            const mouthColor = mouthColors[mouthColorIndex];
+            ctx.fillStyle = mouthColor;
+          }
+          ctx.fillRect(
+            x,
+            y,
+            feature.width * pixelSize,
+            feature.height * pixelSize
+          );
+        }
+      }
+
+      document
+        .getElementById("generate-avatar-button")
+        .addEventListener("click", generateAvatar);
+    </script>
+  </body>
+</html>
